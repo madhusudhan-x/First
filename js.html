@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Object Manager</title>
+    <style>
+        body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
+        input, button { padding: 8px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+        button { cursor: pointer; background-color: #2575fc; color: white; border: none; border-radius: 5px; }
+        button:hover { background-color: #1b5fcc; }
+        #output { margin-top: 20px; padding: 10px; background: #f0f0f0; white-space: pre-wrap; }
+        h2 { color: #2575fc; }
+    </style>
+</head>
+<body>
+
+<h2>Dynamic Object Manager</h2>
+
+<!-- Show Object -->
+<button id="showBtn">Show Object</button>
+
+<!-- Add / Update Property -->
+<h3>Add / Update Property</h3>
+<input type="text" id="keyInput" placeholder="Property Name">
+<input type="text" id="valueInput" placeholder="Property Value">
+<button id="addUpdateBtn">Add / Update Property</button>
+
+<!-- Delete Property -->
+<h3>Delete Property</h3>
+<input type="text" id="deleteKeyInput" placeholder="Property Name to Delete">
+<button id="deleteBtn">Delete Property</button>
+
+<!-- Output -->
+<div id="output"></div>
+
+<script>
+    // 1️⃣ Object to manage
+    let obj = {};
+
+    // 2️⃣ Get elements
+    const showBtn = document.getElementById("showBtn");
+    const addUpdateBtn = document.getElementById("addUpdateBtn");
+    const deleteBtn = document.getElementById("deleteBtn");
+    const keyInput = document.getElementById("keyInput");
+    const valueInput = document.getElementById("valueInput");
+    const deleteKeyInput = document.getElementById("deleteKeyInput");
+    const output = document.getElementById("output");
+
+    // 3️⃣ Show object
+    function showObject() {
+        if (Object.keys(obj).length === 0) {
+            output.textContent = "Object is empty.";
+        } else {
+            output.textContent = JSON.stringify(obj, null, 2);
+        }
+    }
+
+    // 4️⃣ Add or Update property
+    function addOrUpdateProperty() {
+        const key = keyInput.value.trim();
+        const value = valueInput.value.trim();
+        if (key === "" || value === "") {
+            alert("Please enter both property name and value.");
+            return;
+        }
+        obj[key] = value;
+        output.textContent = `Property '${key}' added/updated.\n` + JSON.stringify(obj, null, 2);
+        keyInput.value = "";
+        valueInput.value = "";
+    }
+
+    // 5️⃣ Delete property
+    function deleteProperty() {
+        const key = deleteKeyInput.value.trim();
+        if (key === "") {
+            alert("Please enter a property name to delete.");
+            return;
+        }
+        if (obj.hasOwnProperty(key)) {
+            delete obj[key];
+            output.textContent = `Property '${key}' deleted.\n` + JSON.stringify(obj, null, 2);
+        } else {
+            alert(`Property '${key}' does not exist.`);
+        }
+        deleteKeyInput.value = "";
+    }
+
+    // 6️⃣ Event listeners
+    showBtn.addEventListener("click", showObject);
+    addUpdateBtn.addEventListener("click", addOrUpdateProperty);
+    deleteBtn.addEventListener("click", deleteProperty);
+</script>
+
+</body>
+</html>
